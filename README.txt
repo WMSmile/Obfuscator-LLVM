@@ -16,3 +16,10 @@ documentation setup.
 If you are writing a package for LLVM, see docs/Packaging.rst for our
 suggestions.
 
+How to Build:
+
+  $ git clone https://github.com/Qrilee/Obfuscator-LLVM.git
+  $ mkdir build
+  $ cd build
+  $ cmake -DCMAKE_BUILD_TYPE=Release ../Obfuscator-LLVM/
+  $ make -j7
