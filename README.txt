@@ -23,3 +23,11 @@ How to Build:
   $ cd build
   $ cmake -DCMAKE_BUILD_TYPE=Release ../Obfuscator-LLVM/
   $ make -j7
+  
+  
+  use -mllvm -bcf -mllvm -fla -mllvm -sub -mllvm -sobf
+  
+* Instructions Substitution -mllvm -sub
+* Bogus Control Flow -mllvm -bcf
+* Control Flow Flattening -mllvm -fla
+* String Obfuscation -mllvm -sobf
