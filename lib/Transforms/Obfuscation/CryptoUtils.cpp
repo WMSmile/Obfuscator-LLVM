@@ -32,6 +32,9 @@
 #include <cassert>
 #include <cstring>
 #include <cstdio>
+#ifdef _WINDOWS
+# include <random>
+#endif // _WINDOWS
 
 // Stats
 #define DEBUG_TYPE "CryptoUtils"
@@ -622,6 +625,25 @@ void CryptoUtils::populate_pool() {
 
 bool CryptoUtils::prng_seed() {
 
+#if defined(_WINDOWS)
+	std::random_device rd;
+	std::uniform_int_distribution<int> dist(0, 255);
+	for (int n = 0; n < 16; ++n) {
+		key[n] = static_cast<char>(dist(rd));
+	}
+
+	DEBUG_WITH_TYPE("cryptoutils", dbgs() << "cryptoutils seeded with std::random_device\n");
+
+	memset(ctr, 0, 16);
+
+	// Once the seed is there, we compute the
+	// AES128 key-schedule
+	aes_compute_ks(ks, key);
+
+	seeded = true;
+	return true;
+#else
+	
 #if defined(__linux__)
   std::ifstream devrandom("/dev/urandom");
 #else
@@ -652,6 +674,8 @@ bool CryptoUtils::prng_seed() {
 	return false;
   }
   return true;
+#endif // _WINDOWS
+
 }
 
 void CryptoUtils::inc_ctr() {
